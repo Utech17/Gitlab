@@ -105,7 +105,7 @@ sudo gitlab-runner register \
   --url "{IP del Gitlab}" \
   --token "glrt-HDfu128s_6hkZrU_xjR_S286MQp0OjEKdToxCw.01.121ka1yx4" \
   --executor "docker" \
-  --docker-image "fedora:41" \
+  --docker-image "fedora:40" \
   --description "fedora-podman-runner" \
   --docker-host "unix:///run/podman/podman.sock" \
   --docker-privileged
@@ -187,7 +187,7 @@ shutdown_timeout = 0
     [runners.cache.azure]
   [runners.docker]
     tls_verify = false
-    image = "fedora:41"
+    image = "fedora:40"
     privileged = true
     # NOTA: Mapeo importante para que el contenedor resuelva localhost como la IP del host
     extra_hosts = ["localhost:{IP_DEL_GITLAB}"]
