@@ -209,3 +209,30 @@ deploy-job:
     
     - echo "✅ Despliegue exitoso."
 ```
+
+### 6. Configuración del Firewall (Post-Despliegue) 🔥
+
+Una vez que tu aplicación esté desplegada, es probable que no puedas acceder a ella desde fuera del servidor porque Fedora bloquea los puertos por defecto.
+
+Debes abrir los puertos que tus contenedores están usando (ej. 3000, 8080).
+
+#### Usando la Interfaz Web (Cockpit)
+
+Fedora Server suele incluir Cockpit preinstalado en el puerto 9090.
+
+1.  Accede a: `https://{IP_DEL_RAUTER_O_SERVER}:9090/network/firewall`
+    *(Acepta la advertencia de certificado si es autofirmado)*
+
+2.  En la sección de **Zonas activas**, busca la zona **Trusted**.
+    *   Verás que la interfaz `podman+` está asociada a esta zona.
+
+3.  Haz clic en **Añadir servicios** (Add Services) o **Añadir puertos** (Add Ports) dentro de la zona pública o la que corresponda a tu interfaz de red principal (generalmente `public` o `FedoraServer`).
+
+    **Importante:** Si tus contenedores usan `network_mode: host` o exponen puertos al host, debes abrir esos puertos en la zona **public** (donde llega el tráfico de internet/lan), no solo en `trusted`.
+
+    *   **TCP:** Añade los puertos de tu app (ej. `8080`, `3000`).
+        *   *Ejemplo:* `5000, 3000-3005`
+    *   **UDP:** Si tu app lo requiere (ej. DNS, streaming).
+
+4.  **Confirmar:**
+    Cockpit te advertirá: *"Añadir puertos específicos hará que se recargue firewalld. ¡Puede que se pierda la configuración actual!"*. Acepta para aplicar los cambios.
