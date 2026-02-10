@@ -181,7 +181,7 @@ stages:
 
 variables:
   # Ruta donde queremos el proyecto en el servidor
-  PROJECT_PATH: /home/gitlab/proyectos/mi-app
+  FOLDER_ROUTE: /home/gitlab/proyectos/mi-app
 
 deploy-job:
   stage: deploy
@@ -191,16 +191,16 @@ deploy-job:
     - echo "🚀 Iniciando despliegue en Fedora..."
     
     # Asegurar que existe la carpeta
-    - mkdir -p $PROJECT_PATH
+    - mkdir -p $FOLDER_ROUTE
     
     # Opción A: Usar git pull (rápido)
     - |
-      if [ -d "$PROJECT_PATH/.git" ]; then
-        cd $PROJECT_PATH
+      if [ -d "$FOLDER_ROUTE/.git" ]; then
+        cd $FOLDER_ROUTE
         git pull origin main
       else
-        git clone $CI_REPOSITORY_URL $PROJECT_PATH
-        cd $PROJECT_PATH
+        git clone $CI_REPOSITORY_URL $FOLDER_ROUTE
+        cd $FOLDER_ROUTE
       fi
     
     # Opción B: Ejecutar Podman Compose
@@ -220,7 +220,7 @@ Debes abrir los puertos que tus contenedores están usando (ej. 3000, 8080).
 
 Fedora Server suele incluir Cockpit preinstalado en el puerto 9090.
 
-1.  Accede a: `https://{IP_DEL_RAUTER_O_SERVER}:9090/network/firewall`
+1.  Accede a: `https://{IP_DEL_SERVER}:9090/network/firewall`
     *(Acepta la advertencia de certificado si es autofirmado)*
 
 2.  En la sección de **Zonas activas**, busca la zona **Trusted**.
