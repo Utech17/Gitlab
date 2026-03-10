@@ -8,6 +8,10 @@ services:
       GITLAB_OMNIBUS_CONFIG: |
         external_url 'http://localhost:8929'
         gitlab_rails['gitlab_shell_ssh_port'] = 2424
+        puma['worker_processes'] = 4
+        sidekiq['concurrency'] = 15
+        prometheus['enable'] = false
+        alertmanager['enable'] = false
     ports:
       - '8929:8929'
       - '8085:443'
